@@ -9,10 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.valentino.questionbank.R
-import com.valentino.questionbank.model.Answer
-import com.valentino.questionbank.model.Course
-import com.valentino.questionbank.model.Folder
-import com.valentino.questionbank.model.Question
+import com.valentino.questionbank.model.*
 import kotlinx.android.synthetic.main.fragment_feedback.view.*
 
 private const val MODE_PARAM = "mode"
@@ -21,10 +18,8 @@ private const val FOLDER_PARAM = "folder"
 private const val QUESTION_PARAM = "question"
 private const val SELECTED_ANSWER_PARAM = "selected_answer"
 private const val RATIONALE_PARAM = "rationale"
-private const val RATING1_PARAM = "rating1"
-private const val RATING2_PARAM = "rating2"
-private const val RATING3_PARAM = "rating3"
-private const val RATING4_PARAM = "rating4"
+private const val RATING_PARAM = "rating"
+
 
 class FeedbackFragment : Fragment(), View.OnClickListener {
     private lateinit var mode : String
@@ -64,10 +59,11 @@ class FeedbackFragment : Fragment(), View.OnClickListener {
                 args.putParcelable(QUESTION_PARAM, question)
                 args.putInt(SELECTED_ANSWER_PARAM, selectedAnswer)
                 args.putString(RATIONALE_PARAM, rationale)
-                args.putInt(RATING1_PARAM, rootView.ratingOneSeekBar.progress)
-                args.putInt(RATING2_PARAM, rootView.ratingTwoSeekBar.progress)
-                args.putInt(RATING3_PARAM, rootView.ratingThreeSeekBar.progress)
-                args.putInt(RATING4_PARAM, rootView.ratingFourSeekBar.progress)
+                val rating = Rating(rootView.ratingOneSeekBar.progress,
+                        rootView.ratingTwoSeekBar.progress,
+                        rootView.ratingThreeSeekBar.progress,
+                        rootView.ratingFourSeekBar.progress)
+                args.putParcelable(RATING_PARAM, rating)
                 alternativeAnswerFragment.arguments = args
                 fragmentManager?.beginTransaction()
                         ?.replace(R.id.content, alternativeAnswerFragment)

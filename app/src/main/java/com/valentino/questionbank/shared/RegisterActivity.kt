@@ -5,13 +5,15 @@ import android.os.Bundle
 import com.valentino.questionbank.R
 import kotlinx.android.synthetic.main.activity_register.*
 
+private const val MODE_PARAM = "mode"
+
 class RegisterActivity : AppCompatActivity() {
-    private lateinit var type : String
+    private lateinit var mode : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-        type = intent.getStringExtra("Type")
-        toolbar.title = "$type Register"
+        mode = intent.getStringExtra(MODE_PARAM)
+        toolbar.title = "${mode.capitalize()} Register"
     }
 }

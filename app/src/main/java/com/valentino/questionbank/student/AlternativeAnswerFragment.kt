@@ -9,10 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.valentino.questionbank.R
-import com.valentino.questionbank.model.Answer
-import com.valentino.questionbank.model.Course
-import com.valentino.questionbank.model.Folder
-import com.valentino.questionbank.model.Question
+import com.valentino.questionbank.model.*
 import kotlinx.android.synthetic.main.fragment_alternative_answer.view.*
 
 private const val MODE_PARAM = "mode"
@@ -21,10 +18,7 @@ private const val FOLDER_PARAM = "folder"
 private const val QUESTION_PARAM = "question"
 private const val SELECTED_ANSWER_PARAM = "selected_answer"
 private const val RATIONALE_PARAM = "rationale"
-private const val RATING1_PARAM = "rating1"
-private const val RATING2_PARAM = "rating2"
-private const val RATING3_PARAM = "rating3"
-private const val RATING4_PARAM = "rating4"
+private const val RATING_PARAM = "rating"
 private const val FINAL_ANSWER_PARAM = "final_answer"
 
 class AlternativeAnswerFragment : Fragment(), View.OnClickListener {
@@ -35,10 +29,7 @@ class AlternativeAnswerFragment : Fragment(), View.OnClickListener {
     private lateinit var question: Question
     private var selectedAnswer = -1
     private lateinit var rationale: String
-    private var rating1 = 0
-    private var rating2 = 0
-    private var rating3 = 0
-    private var rating4 = 0
+    private lateinit var rating: Rating
     private var alternativeAnswer = -1
     private var finalAnswer = -1
     private lateinit var rootView: View
@@ -51,10 +42,7 @@ class AlternativeAnswerFragment : Fragment(), View.OnClickListener {
         question = arguments?.getParcelable(QUESTION_PARAM)!!
         selectedAnswer = arguments?.getInt(SELECTED_ANSWER_PARAM)!!
         rationale = arguments?.getString(RATIONALE_PARAM)!!
-        rating1 = arguments?.getInt(RATING1_PARAM)!!
-        rating2 = arguments?.getInt(RATING2_PARAM)!!
-        rating3 = arguments?.getInt(RATING3_PARAM)!!
-        rating4 = arguments?.getInt(RATING4_PARAM)!!
+        rating = arguments?.getParcelable(RATING_PARAM)!!
         alternativeAnswer = generateAlternativeAnswer()
     }
 
@@ -87,10 +75,7 @@ class AlternativeAnswerFragment : Fragment(), View.OnClickListener {
                     args.putParcelable(QUESTION_PARAM, question)
                     args.putInt(SELECTED_ANSWER_PARAM, selectedAnswer)
                     args.putString(RATIONALE_PARAM, rationale)
-                    args.putInt(RATING1_PARAM, rating1)
-                    args.putInt(RATING2_PARAM, rating2)
-                    args.putInt(RATING3_PARAM, rating3)
-                    args.putInt(RATING4_PARAM, rating4)
+                    args.putParcelable(RATING_PARAM, rating)
                     args.putInt(FINAL_ANSWER_PARAM, finalAnswer)
                     summaryFragment.arguments = args
                     fragmentManager?.beginTransaction()

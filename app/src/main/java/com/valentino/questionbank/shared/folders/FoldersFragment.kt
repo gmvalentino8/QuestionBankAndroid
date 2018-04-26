@@ -17,7 +17,7 @@ import com.valentino.questionbank.utilities.OnItemClickListener
 import com.valentino.questionbank.utilities.addOnItemClickListener
 import kotlinx.android.synthetic.main.fragment_folders.view.*
 import android.support.v7.widget.DividerItemDecoration
-
+import android.util.Log
 
 
 private const val MODE_PARAM = "mode"
@@ -35,9 +35,13 @@ class FoldersFragment : Fragment() {
             Folder(3,"Folder 3", "Description 3"),
             Folder(4,"Folder 4", "Description 4")
     )
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mode = arguments?.getString(MODE_PARAM)!!
+        Log.d("FoldersFragment", "Mode: $mode")
+
         course = arguments?.getParcelable<Course>(COURSE_PARAM)!!
 
     }
@@ -65,6 +69,8 @@ class FoldersFragment : Fragment() {
 
         })
 
+        Log.d("FoldersFragment", "Mode: $mode")
+
         when (mode) {
             "instructor" -> {
                 initInstructorViews(view)
@@ -78,14 +84,14 @@ class FoldersFragment : Fragment() {
     }
 
 
-    fun initInstructorViews(view: View) {
+    private fun initInstructorViews(view: View) {
         view.fab.visibility = View.VISIBLE
         view.fab.setOnClickListener({
             Toast.makeText(context, "Add", Toast.LENGTH_SHORT).show()
         })
     }
 
-    fun initStudentViews(view: View) {
+    private fun initStudentViews(view: View) {
         view.fab.visibility = View.GONE
     }
 

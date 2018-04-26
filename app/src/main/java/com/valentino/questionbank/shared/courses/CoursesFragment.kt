@@ -23,8 +23,7 @@ class CoursesFragment : Fragment() {
     private lateinit var adapter: CoursesAdapter
     var courseData = arrayListOf(
         Course(1, "Intro to Computer Science", "CS125", "Spring 2018"),
-        Course(2, "Data Structures", "CS225", "Summer 2018"),
-        Course(3, "Computer Architecture", "CS233", "Fall 2017")
+        Course(2, "Data Structures", "CS225", "Summer 2018")
     )
 
 
@@ -56,14 +55,16 @@ class CoursesFragment : Fragment() {
             }
         })
 
-        when (mode) {
-            "instructor" -> {
-                initInstructorViews(view)
-            }
-            "student" -> {
-                initStudentViews(view)
-            }
-        }
+        initStudentViews(view)
+
+//        when (mode) {
+//            "instructor" -> {
+//                initInstructorViews(view)
+//            }
+//            "student" -> {
+//                initStudentViews(view)
+//            }
+//        }
         return view
     }
 

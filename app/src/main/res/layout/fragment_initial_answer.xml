@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".student.InitialAnswerFragment"
+    tools:context=".student.answer.InitialAnswerFragment"
     android:padding="10dp"
     android:clipToPadding="false">
 
@@ -35,6 +35,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/question_label"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     style="@style/AnswerLabel" />
 
                 <TextView
@@ -68,8 +70,9 @@
                 <TextView
                     android:id="@+id/answerALabel"
                     android:layout_width="35dp"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="12dp"
                     android:text="@string/answer_a_label"
                     style="@style/AnswerLabel" />
 
@@ -103,8 +106,9 @@
                 <TextView
                     android:id="@+id/answerBLabel"
                     android:layout_width="35dp"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="12dp"
                     android:text="@string/answer_b_label"
                     style="@style/AnswerLabel" />
 
@@ -138,8 +142,9 @@
                 <TextView
                     android:id="@+id/answerCLabel"
                     android:layout_width="35dp"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="12dp"
                     android:text="@string/answer_c_label"
                     style="@style/AnswerLabel" />
 
@@ -173,8 +178,9 @@
                 <TextView
                     android:id="@+id/answerDLabel"
                     android:layout_width="35dp"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="12dp"
                     android:text="@string/answer_d_label"
                     style="@style/AnswerLabel" />
 

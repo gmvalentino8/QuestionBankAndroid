@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".instructor.AddClassActivity">
+    tools:context=".instructor.AddFolderActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -18,6 +18,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimaryDark"
             app:titleTextColor="@color/white"
+            app:title="Create Folder"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
@@ -62,7 +63,7 @@
                         android:id="@+id/nameTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter the course name"
+                        android:hint="Enter the folder name"
                         style="@style/AnswerText" />
 
                 </LinearLayout>
@@ -87,56 +88,19 @@
                     android:padding="10dp">
 
                     <TextView
-                        android:id="@+id/codeLabel"
+                        android:id="@+id/descriptionLabel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/course_code"
+                        android:text="@string/description_label"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
                         style="@style/AnswerLabel" />
 
                     <EditText
-                        android:id="@+id/codeTextView"
+                        android:id="@+id/descriptionTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter the course's code (i.e. CS 101)"
-                        style="@style/AnswerText" />
-
-                </LinearLayout>
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginBottom="7dp"
-                android:clickable="true"
-                android:focusable="true"
-                app:cardElevation="3dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:id="@+id/termLabel"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/term_label"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        style="@style/AnswerLabel" />
-
-                    <EditText
-                        android:id="@+id/termTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Enter the course's term (i.e. Spring 2018)"
+                        android:hint="Enter the folder description"
                         style="@style/AnswerText" />
 
                 </LinearLayout>

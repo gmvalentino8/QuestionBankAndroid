@@ -9,9 +9,10 @@ import com.valentino.questionbank.model.Question
 import kotlinx.android.synthetic.main.item_question.view.*
 
 class QuestionsAdapter(private val questions: List<Question>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    var questionData = questions.toMutableList()
 
     override fun getItemCount(): Int {
-        return  questions.size
+        return  questionData.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -20,9 +21,15 @@ class QuestionsAdapter(private val questions: List<Question>) : RecyclerView.Ada
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val data = questions[position]
+        val data = questionData[position]
         val placeHolder = holder as QuestionsViewHolder
         placeHolder.bindData(data, position)
+    }
+
+    fun addItems(items: List<Question>) {
+        questionData.clear()
+        questionData.addAll(items)
+        notifyDataSetChanged()
     }
 
     class QuestionsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -31,7 +38,7 @@ class QuestionsAdapter(private val questions: List<Question>) : RecyclerView.Ada
         fun bindData(question: Question, position: Int) {
             view.titleTextView.text = String.format("Question %d:", position + 1)
             view.contentTextView.text = question.content
-            view.tagsTextView.text = String.format("Tags: %s", question.tags.joinToString(", "))
+            //view.tagsTextView.text = String.format("Tags: %s", question.tags.joinToString(", "))
         }
     }
 }

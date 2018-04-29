@@ -1,10 +1,7 @@
-package Student
+package com.valentino.questionbank.student.answer
 
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +33,7 @@ class SummaryFragment : Fragment() {
     private lateinit var rating: Rating
     private var finalAnswer = -1
     private lateinit var rootView: View
+    private var disableSeekbar = View.OnTouchListener { _, _ -> true }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +43,7 @@ class SummaryFragment : Fragment() {
         folder = arguments?.getParcelable(FOLDER_PARAM)!!
         question = arguments?.getParcelable(QUESTION_PARAM)!!
         selectedAnswer = arguments?.getInt(SELECTED_ANSWER_PARAM)!!
-        rationale = arguments?.getString(RATIONALE_PARAM)!!
+        rationale = arguments?.getString(RATIONALE_PARAM)?:""
         rating = arguments?.getParcelable(RATING_PARAM)!!
         finalAnswer = arguments?.getInt(FINAL_ANSWER_PARAM)!!
     }
@@ -59,9 +57,13 @@ class SummaryFragment : Fragment() {
         rootView.finalAnswerTextView.text = question.answers[finalAnswer].content
         rootView.correctAnswerTextView.text = question.answers[question.correct].content
         rootView.ratingOneSeekBar.setProgress(rating.rating1)
+        rootView.ratingOneSeekBar.setOnTouchListener(disableSeekbar)
         rootView.ratingTwoSeekBar.setProgress(rating.rating2)
+        rootView.ratingTwoSeekBar.setOnTouchListener(disableSeekbar)
         rootView.ratingThreeSeekBar.setProgress(rating.rating3)
+        rootView.ratingThreeSeekBar.setOnTouchListener(disableSeekbar)
         rootView.ratingFourSeekBar.setProgress(rating.rating4)
+        rootView.ratingFourSeekBar.setOnTouchListener(disableSeekbar)
 
         return rootView
     }

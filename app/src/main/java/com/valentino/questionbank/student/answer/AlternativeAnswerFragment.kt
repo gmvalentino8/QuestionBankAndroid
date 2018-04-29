@@ -1,7 +1,6 @@
-package com.valentino.questionbank.student
+package com.valentino.questionbank.student.answer
 
 
-import Student.SummaryFragment
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater

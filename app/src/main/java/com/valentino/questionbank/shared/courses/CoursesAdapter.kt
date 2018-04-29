@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import com.valentino.questionbank.R
 import com.valentino.questionbank.model.Course
 import kotlinx.android.synthetic.main.item_course.view.*
+import java.util.*
 
-class CoursesAdapter(private val courses: List<Course>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CoursesAdapter(var courses: List<Course>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    var courseData = courses.toMutableList()
 
     override fun getItemCount(): Int {
-        return  courses.size
+        return  courseData.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -20,9 +22,15 @@ class CoursesAdapter(private val courses: List<Course>) : RecyclerView.Adapter<R
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val data = courses[position]
+        val data = courseData[position]
         val placeHolder = holder as CourseViewHolder
         placeHolder.bindData(data)
+    }
+
+    fun addItems(items: List<Course>) {
+        courseData.clear()
+        courseData.addAll(items)
+        notifyDataSetChanged()
     }
 
     class CourseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

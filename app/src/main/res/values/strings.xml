@@ -51,4 +51,10 @@
     <string name="answer_c_label">(c)</string>
     <string name="answer_d_label">(d)</string>
     <string name="finish">Finish</string>
+    <string name="name_label">Name:</string>
+    <string name="description_label">Description:</string>
+    <string name="course_code">Course Code:</string>
+    <string name="term_label">Term:</string>
+    <string name="tags_label">Tags:</string>
+    <string name="logout">Logout</string>
 </resources>

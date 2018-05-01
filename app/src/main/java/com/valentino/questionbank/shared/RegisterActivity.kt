@@ -3,9 +3,8 @@ package com.valentino.questionbank.shared
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.valentino.questionbank.R
+import com.valentino.questionbank.utilities.MODE_PARAM
 import kotlinx.android.synthetic.main.activity_register.*
-
-private const val MODE_PARAM = "mode"
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var mode : String

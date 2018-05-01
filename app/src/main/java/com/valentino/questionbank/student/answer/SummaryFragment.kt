@@ -1,30 +1,22 @@
 package com.valentino.questionbank.student.answer
 
+import android.app.Activity.RESULT_OK
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
 import com.valentino.questionbank.R
-import com.valentino.questionbank.model.Course
-import com.valentino.questionbank.model.Folder
-import com.valentino.questionbank.model.Question
-import com.valentino.questionbank.model.Rating
+import com.valentino.questionbank.api.ApiService
+import com.valentino.questionbank.model.*
+import com.valentino.questionbank.utilities.*
+import kotlinx.android.synthetic.main.fragment_summary.*
 import kotlinx.android.synthetic.main.fragment_summary.view.*
 
-private const val MODE_PARAM = "mode"
-private const val COURSE_PARAM = "course"
-private const val FOLDER_PARAM = "folder"
-private const val QUESTION_PARAM = "question"
-private const val SELECTED_ANSWER_PARAM = "selected_answer"
-private const val RATIONALE_PARAM = "rationale"
-private const val RATING_PARAM = "rating"
-private const val FINAL_ANSWER_PARAM = "final_answer"
-
 class SummaryFragment : Fragment() {
-
-    private lateinit var mode : String
+    private lateinit var mode: String
     private lateinit var course : Course
     private lateinit var folder: Folder
     private lateinit var question: Question
@@ -34,7 +26,6 @@ class SummaryFragment : Fragment() {
     private var finalAnswer = -1
     private lateinit var rootView: View
     private var disableSeekbar = View.OnTouchListener { _, _ -> true }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +55,18 @@ class SummaryFragment : Fragment() {
         rootView.ratingThreeSeekBar.setOnTouchListener(disableSeekbar)
         rootView.ratingFourSeekBar.setProgress(rating.rating4)
         rootView.ratingFourSeekBar.setOnTouchListener(disableSeekbar)
+
+        if (mode == "answer") {
+            val studentAnswer = StudentAnswer(question.qid!!, rationale, rating, selectedAnswer, finalAnswer)
+            ApiService.postAnswer(prefs(context!!).session, studentAnswer) {
+                Log.d("Summary Fragment", "Answer Posted")
+                activity?.setResult(RESULT_OK)
+            }
+        }
+        rootView.submitButton.setOnClickListener({
+            Log.d("Summary Fragment", "Finish Clicked")
+            activity?.finish()
+        })
 
         return rootView
     }

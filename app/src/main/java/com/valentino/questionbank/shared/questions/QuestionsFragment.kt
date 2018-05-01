@@ -1,6 +1,8 @@
 package com.valentino.questionbank.shared.questions
 
 
+import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.drawable.ClipDrawable.HORIZONTAL
 import android.os.Bundle
@@ -18,18 +20,11 @@ import com.valentino.questionbank.instructor.QuestionOverviewActivity
 import com.valentino.questionbank.model.Course
 import com.valentino.questionbank.model.Folder
 import com.valentino.questionbank.model.Question
+import com.valentino.questionbank.model.Rationale
 import com.valentino.questionbank.student.answer.AnswerQuestionActivity
-import com.valentino.questionbank.utilities.OnItemClickListener
-import com.valentino.questionbank.utilities.addOnItemClickListener
-import com.valentino.questionbank.utilities.defaultPrefs
-import com.valentino.questionbank.utilities.session
-import kotlinx.android.synthetic.main.fragment_questions.view.*
+import com.valentino.questionbank.utilities.*
 
-private const val MODE_PARAM = "mode"
-private const val ANSWER_PARAM = "answer"
-private const val COURSE_PARAM = "course"
-private const val FOLDER_PARAM = "folder"
-private const val QUESTION_PARAM = "question"
+import kotlinx.android.synthetic.main.fragment_questions.view.*
 
 /**
  * A simple [Fragment] subclass.
@@ -41,32 +36,6 @@ class QuestionsFragment : Fragment() {
     private lateinit var folder: Folder
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: QuestionsAdapter
-//    var questionsData = arrayListOf(
-//            Question(1, "This is question 1",
-//                    arrayListOf(
-//                        Answer(1, "This is answer 1.1"),
-//                        Answer(2, "This is answer 1.2"),
-//                        Answer(3, "This is answer 1.3"),
-//                        Answer(4, "This is answer 1.4")
-//                    ), 1, arrayListOf("Tag 1", "Tag 2", "Tag 3")
-//            ),
-//            Question(2, "This is question 2",
-//                    arrayListOf(
-//                        Answer(1, "This is answer 1.1"),
-//                        Answer(2, "This is answer 1.2"),
-//                        Answer(3, "This is answer 1.3"),
-//                        Answer(4, "This is answer 1.4")
-//                    ), 2, arrayListOf("Tag 1", "Tag 2", "Tag 3")
-//            ),
-//            Question(3, "This is question 3",
-//                    arrayListOf(
-//                        Answer(1, "This is answer 1.1"),
-//                        Answer(2, "This is answer 1.2"),
-//                        Answer(3, "This is answer 1.3"),
-//                        Answer(4, "This is answer 1.4")
-//                    ), 3, arrayListOf("Tag 1", "Tag 2", "Tag 3")
-//            )
-//    )
     var questionsData = arrayListOf<Question>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,13 +44,7 @@ class QuestionsFragment : Fragment() {
         course = arguments?.getParcelable(COURSE_PARAM)!!
         folder = arguments?.getParcelable(FOLDER_PARAM)!!
         adapter = QuestionsAdapter(questionsData)
-        folder.fid?.let {
-                ApiService.getQuestions(defaultPrefs(context!!).session, it) {
-                questionsData = ArrayList(it)
-                adapter.addItems(questionsData)
-            }
-        }
-
+        loadData()
     }
 
     override fun onResume() {
@@ -98,10 +61,10 @@ class QuestionsFragment : Fragment() {
         view.questionsRecyclerView.addItemDecoration(DividerItemDecoration(context, HORIZONTAL))
 
         when (mode) {
-            "instructor" -> {
+            MODE_INSTRUCTOR -> {
                 initInstructorViews(view)
             }
-            "student" -> {
+            MODE_STUDENT -> {
                 initStudentViews(view)
             }
         }
@@ -109,7 +72,29 @@ class QuestionsFragment : Fragment() {
         return view
     }
 
-    fun initInstructorViews(view: View) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            SUCCESS_CODE -> {
+                if (resultCode == RESULT_OK) {
+                    loadData()
+                }
+            }
+            else -> {
+                super.onActivityResult(requestCode, resultCode, data)
+            }
+        }
+    }
+
+    private fun loadData() {
+        folder.fid?.let {
+            ApiService.getQuestions(prefs(context!!).session, it) {
+                questionsData = ArrayList(it)
+                adapter.addItems(questionsData)
+            }
+        }
+    }
+
+    private fun initInstructorViews(view: View) {
         view.fab.visibility = View.VISIBLE
         view.questionsRecyclerView.addOnItemClickListener(object : OnItemClickListener {
             override fun onItemClicked(position: Int, view: View) {
@@ -124,7 +109,6 @@ class QuestionsFragment : Fragment() {
     fun loadQuestionOverview(question: Question) {
         val intent = Intent(context, QuestionOverviewActivity::class.java)
         val args = Bundle()
-        args.putString(MODE_PARAM, mode)
         args.putParcelable(COURSE_PARAM, course)
         args.putParcelable(FOLDER_PARAM, folder)
         args.putParcelable(QUESTION_PARAM, question)
@@ -132,13 +116,13 @@ class QuestionsFragment : Fragment() {
         startActivity(intent)
     }
 
-    fun loadAddQuestion() {
+    private fun loadAddQuestion() {
         val intent = Intent(context, AddQuestionActivity::class.java)
         intent.putExtra(FOLDER_PARAM, folder)
-        startActivity(intent)
+        startActivityForResult(intent, SUCCESS_CODE)
     }
 
-    fun initStudentViews(view: View) {
+    private fun initStudentViews(view: View) {
         view.fab.visibility = View.GONE
         view.questionsRecyclerView.addOnItemClickListener(object : OnItemClickListener {
             override fun onItemClicked(position: Int, view: View) {
@@ -146,7 +130,6 @@ class QuestionsFragment : Fragment() {
             }
         })
     }
-
 
     fun loadStudentAnswer(question: Question) {
         val intent = Intent(context, AnswerQuestionActivity::class.java)

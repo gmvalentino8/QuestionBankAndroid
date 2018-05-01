@@ -25,7 +25,7 @@ fun RecyclerView.addOnItemClickListener(onClickListener: OnItemClickListener) {
     })
 }
 
-fun defaultPrefs(context: Context): SharedPreferences
+fun prefs(context: Context): SharedPreferences
         = PreferenceManager.getDefaultSharedPreferences(context)
 
 const val SESSION_ID = "session"
@@ -34,8 +34,8 @@ var SharedPreferences.session
     get() = getString(SESSION_ID, "")
     set(value: String) { edit().putString(SESSION_ID, value).apply() }
 
-const val MODE_ID = "mode"
+const val USER_ID = "user"
 
-var SharedPreferences.mode
-    get() = getString(MODE_ID, "")
-    set(value: String) { edit().putString(MODE_ID, value).apply() }
+var SharedPreferences.user
+    get() = getString(USER_ID, "")
+    set(value: String) { edit().putString(USER_ID, value).apply() }

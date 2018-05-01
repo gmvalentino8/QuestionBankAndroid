@@ -1,5 +1,6 @@
 package com.valentino.questionbank.shared.folders
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -12,31 +13,17 @@ import com.valentino.questionbank.R
 import com.valentino.questionbank.model.Course
 import com.valentino.questionbank.model.Folder
 import com.valentino.questionbank.shared.questions.QuestionsFragment
-import com.valentino.questionbank.utilities.OnItemClickListener
-import com.valentino.questionbank.utilities.addOnItemClickListener
 import kotlinx.android.synthetic.main.fragment_folders.view.*
 import android.util.Log
 import com.valentino.questionbank.api.ApiService
 import com.valentino.questionbank.instructor.AddFolderActivity
-import com.valentino.questionbank.utilities.defaultPrefs
-import com.valentino.questionbank.utilities.session
-
-private const val SUCCESS_CODE = 1
-private const val MODE_PARAM = "mode"
-private const val COURSE_PARAM = "course"
-private const val FOLDER_PARAM = "folder"
+import com.valentino.questionbank.utilities.*
 
 class FoldersFragment : Fragment() {
     private lateinit var mode : String
     private lateinit var course : Course
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: FoldersAdapter
-//    var foldersData = arrayListOf(
-//            Folder(1,"Folder 1", "Description 1"),
-//            Folder(2,"Folder 2", "Description 2"),
-//            Folder(3,"Folder 3", "Description 3"),
-//            Folder(4,"Folder 4", "Description 4")
-//    )
     var foldersData = arrayListOf<Folder>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,12 +31,7 @@ class FoldersFragment : Fragment() {
         mode = arguments?.getString(MODE_PARAM)!!
         course = arguments?.getParcelable<Course>(COURSE_PARAM)!!
         adapter = FoldersAdapter(foldersData)
-        ApiService.getFolders(defaultPrefs(context!!).session, course.cid!!) {
-            foldersData = ArrayList(it)
-            adapter.addItems(foldersData)
-        }
-
-
+        loadData()
     }
 
     override fun onResume() {
@@ -82,10 +64,10 @@ class FoldersFragment : Fragment() {
         Log.d("FoldersFragment", "Mode: $mode")
 
         when (mode) {
-            "instructor" -> {
+            MODE_INSTRUCTOR -> {
                 initInstructorViews(view)
             }
-            "student" -> {
+            MODE_STUDENT -> {
                 initStudentViews(view)
             }
         }
@@ -93,6 +75,25 @@ class FoldersFragment : Fragment() {
         return view
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            SUCCESS_CODE -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    loadData()
+                }
+            }
+            else -> {
+                super.onActivityResult(requestCode, resultCode, data)
+            }
+        }
+    }
+
+    private fun loadData() {
+        ApiService.getFolders(prefs(context!!).session, course.cid!!) {
+            foldersData = ArrayList(it)
+            adapter.addItems(foldersData)
+        }
+    }
 
     private fun initInstructorViews(view: View) {
         view.fab.visibility = View.VISIBLE

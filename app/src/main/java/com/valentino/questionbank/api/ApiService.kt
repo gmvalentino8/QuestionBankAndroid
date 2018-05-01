@@ -13,9 +13,7 @@ object ApiService {
         val call = apiService.registerUser(user)
         call.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>?, response: Response<Void>?) {
-                if (response != null) {
-                    completion()
-                }
+                completion()
             }
             override fun onFailure(call: Call<Void>?, t: Throwable?) {}
         })
@@ -25,11 +23,19 @@ object ApiService {
         val call = apiService.loginUser(login)
         call.enqueue(object : Callback<Session> {
             override fun onResponse(call: Call<Session>?, response: Response<Session>?) {
-                if (response?.body() != null) {
-                    completion(response.body()!!)
-                }
+                response?.body()?.let(completion)
             }
             override fun onFailure(call: Call<Session>?, t: Throwable?) {}
+        })
+    }
+
+    fun getUser(token: String, userId: String, completion: (User) -> Unit) {
+        val call = apiService.getUser(token, userId)
+        call.enqueue(object : Callback<User> {
+            override fun onResponse(call: Call<User>?, response: Response<User>?) {
+                response?.body()?.let(completion)
+            }
+            override fun onFailure(call: Call<User>?, t: Throwable?) { }
         })
     }
 
@@ -41,9 +47,9 @@ object ApiService {
         val call = apiService.tokenIsValid(token)
         call.enqueue(object : Callback<ValidResponse> {
             override fun onResponse(call: Call<ValidResponse>?, response: Response<ValidResponse>?) {
-                if (response?.body() != null) {
-                    Log.d("SessionIsValid", response.body().toString())
-                    response.body()?.valid?.let { completion(it) }
+                if (response != null) {
+                    Log.d("Login", response.body().toString())
+                    completion(response.body()?.valid!!)
                 }
             }
             override fun onFailure(call: Call<ValidResponse>?, t: Throwable?) {}
@@ -54,9 +60,7 @@ object ApiService {
         val call = apiService.postClass(token, course)
         call.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>?, response: Response<Void>?) {
-                if (response != null) {
-                    completion()
-                }
+                completion()
             }
             override fun onFailure(call: Call<Void>?, t: Throwable?) {}
         })
@@ -66,9 +70,8 @@ object ApiService {
         val call = apiService.joinClass(token, course)
         call.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>?, response: Response<Void>?) {
-                if (response != null) {
-                    completion()
-                }
+                Log.d("Join Course", "On Response")
+                completion()
             }
             override fun onFailure(call: Call<Void>?, t: Throwable?) {}
         })
@@ -78,9 +81,18 @@ object ApiService {
         val call = apiService.getClasses(token)
         call.enqueue(object : Callback<List<Course>> {
             override fun onResponse(call: Call<List<Course>>?, response: Response<List<Course>>?) {
-                if (response?.body() != null) {
-                    completion(response.body()!!)
-                }
+                response?.body()?.let(completion)
+            }
+            override fun onFailure(call: Call<List<Course>>?, t: Throwable?) {}
+        })
+    }
+
+    fun filterCourses(token: String, schoolId: Int, name: String = "", code: String = "",
+                      term: String = "", completion: (List<Course>) -> Unit) {
+        val call = apiService.filterClasses(token, schoolId, name, code, term)
+        call.enqueue(object : Callback<List<Course>> {
+            override fun onResponse(call: Call<List<Course>>?, response: Response<List<Course>>?) {
+                response?.body()?.let(completion)
             }
             override fun onFailure(call: Call<List<Course>>?, t: Throwable?) {}
         })
@@ -90,13 +102,9 @@ object ApiService {
         val call = apiService.postFolder(token, folder)
         call.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>?, response: Response<Void>?) {
-                if (response != null) {
-                    completion()
-                }
+                completion()
             }
-            override fun onFailure(call: Call<Void>?, t: Throwable?) {
-                Log.d("Retrofit", "Failed")
-            }
+            override fun onFailure(call: Call<Void>?, t: Throwable?) {}
         })
     }
 
@@ -104,9 +112,7 @@ object ApiService {
         val call = apiService.getFolders(token, classId)
         call.enqueue(object : Callback<List<Folder>> {
             override fun onResponse(call: Call<List<Folder>>?, response: Response<List<Folder>>?) {
-                if (response?.body() != null) {
-                    completion(response.body()!!)
-                }
+                response?.body()?.let(completion)
             }
             override fun onFailure(call: Call<List<Folder>>?, t: Throwable?) {}
         })
@@ -116,13 +122,9 @@ object ApiService {
         val call = apiService.postQuestion(token, question)
         call.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>?, response: Response<Void>?) {
-                if (response != null) {
-                    completion()
-                }
+                completion()
             }
-            override fun onFailure(call: Call<Void>?, t: Throwable?) {
-                Log.d("Retrofit", "Failed")
-            }
+            override fun onFailure(call: Call<Void>?, t: Throwable?) {}
         })
     }
 
@@ -130,11 +132,29 @@ object ApiService {
         val call = apiService.getQuestions(token, folderId)
         call.enqueue(object : Callback<List<Question>> {
             override fun onResponse(call: Call<List<Question>>?, response: Response<List<Question>>?) {
-                if (response?.body() != null) {
-                    completion(response.body()!!)
-                }
+                response?.body()?.let(completion)
             }
             override fun onFailure(call: Call<List<Question>>?, t: Throwable?) {}
+        })
+    }
+
+    fun filterQuestions(token: String, name: String, tag: String, completion: (List<Question>) -> Unit) {
+        val call = apiService.filterQuestions(token, name, tag)
+        call.enqueue(object : Callback<List<Question>> {
+            override fun onResponse(call: Call<List<Question>>?, response: Response<List<Question>>?) {
+                response?.body()?.let(completion)
+            }
+            override fun onFailure(call: Call<List<Question>>?, t: Throwable?) {}
+        })
+    }
+
+    fun postAnswer(token: String, answer: StudentAnswer, completion: () -> Unit) {
+        val call = apiService.postAnswer(token, answer)
+        call.enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>?, response: Response<Void>?) {
+                completion()
+            }
+            override fun onFailure(call: Call<Void>?, t: Throwable?) {}
         })
     }
 
@@ -142,11 +162,29 @@ object ApiService {
         val call = apiService.getAnswer(token, questionId)
         call.enqueue(object : Callback<StudentAnswer> {
             override fun onResponse(call: Call<StudentAnswer>?, response: Response<StudentAnswer>?) {
-                if (response?.body() != null) {
-                    completion(response.body()!!)
-                }
+                response?.body()?.let(completion)
             }
             override fun onFailure(call: Call<StudentAnswer>?, t: Throwable?) {}
+        })
+    }
+
+    fun getRationales(token: String, questionId: Int, classId: Int, completion: (List<Rationale>) -> Unit) {
+        val call = apiService.getRationales(token, questionId, classId)
+        call.enqueue(object : Callback<List<Rationale>> {
+            override fun onResponse(call: Call<List<Rationale>>?, response: Response<List<Rationale>>?) {
+                response?.body()?.let(completion)
+            }
+            override fun onFailure(call: Call<List<Rationale>>?, t: Throwable?) {}
+        })
+    }
+
+    fun getAnalysis(token: String, questionId: Int, completion: (Analysis) -> Unit) {
+        val call = apiService.getAnalysis(token, questionId)
+        call.enqueue(object : Callback<Analysis> {
+            override fun onResponse(call: Call<Analysis>?, response: Response<Analysis>?) {
+                response?.body()?.let(completion)
+            }
+            override fun onFailure(call: Call<Analysis>?, t: Throwable?) {}
         })
     }
 }

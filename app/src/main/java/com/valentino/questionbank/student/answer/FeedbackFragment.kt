@@ -9,19 +9,17 @@ import android.view.ViewGroup
 
 import com.valentino.questionbank.R
 import com.valentino.questionbank.model.*
+import com.valentino.questionbank.utilities.MODE_PARAM
+import com.valentino.questionbank.utilities.COURSE_PARAM
+import com.valentino.questionbank.utilities.FOLDER_PARAM
+import com.valentino.questionbank.utilities.QUESTION_PARAM
+import com.valentino.questionbank.utilities.SELECTED_ANSWER_PARAM
+import com.valentino.questionbank.utilities.RATIONALE_PARAM
+import com.valentino.questionbank.utilities.RATING_PARAM
+
 import kotlinx.android.synthetic.main.fragment_feedback.view.*
 
-private const val MODE_PARAM = "mode"
-private const val COURSE_PARAM = "course"
-private const val FOLDER_PARAM = "folder"
-private const val QUESTION_PARAM = "question"
-private const val SELECTED_ANSWER_PARAM = "selected_answer"
-private const val RATIONALE_PARAM = "rationale"
-private const val RATING_PARAM = "rating"
-
-
 class FeedbackFragment : Fragment(), View.OnClickListener {
-    private lateinit var mode : String
     private lateinit var course : Course
     private lateinit var folder: Folder
     private lateinit var question: Question
@@ -31,7 +29,6 @@ class FeedbackFragment : Fragment(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mode = arguments?.getString(MODE_PARAM)!!
         course = arguments?.getParcelable(COURSE_PARAM)!!
         folder = arguments?.getParcelable(FOLDER_PARAM)!!
         question = arguments?.getParcelable(QUESTION_PARAM)!!
@@ -52,7 +49,6 @@ class FeedbackFragment : Fragment(), View.OnClickListener {
             rootView.submitButton -> {
                 val alternativeAnswerFragment = AlternativeAnswerFragment()
                 val args = Bundle()
-                args.putString(MODE_PARAM, mode)
                 args.putParcelable(COURSE_PARAM, course)
                 args.putParcelable(FOLDER_PARAM, folder)
                 args.putParcelable(QUESTION_PARAM, question)

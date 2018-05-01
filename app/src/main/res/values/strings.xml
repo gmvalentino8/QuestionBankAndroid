@@ -29,14 +29,14 @@
     <string name="profile">Profile</string>
     <string name="submit">Submit</string>
     <string name="rationale_hint">Enter your reasoning here</string>
-    <string name="rating_4">Rating 4</string>
-    <string name="rating_4_description">Rating 4 Description</string>
-    <string name="rating_3">Rating 3</string>
-    <string name="rating_3_description">Rating 3 Description</string>
-    <string name="rating_2_description">Rating 2 Description</string>
-    <string name="rating_2">Rating 2</string>
-    <string name="rating_1_description">Rating 1 Description</string>
-    <string name="rating_1">Rating 1</string>
+    <string name="rating_1">Confidence</string>
+    <string name="rating_1_description">Degree of certainty that you selected the correct answer</string>
+    <string name="rating_2">Difficulty</string>
+    <string name="rating_2_description">Degree of perceived effort and resources required to answer this question</string>
+    <string name="rating_3">Clarity</string>
+    <string name="rating_3_description">Degree that you understood exactly what this question was asking</string>
+    <string name="rating_4">Readiness</string>
+    <string name="rating_4_description">Degree of how much the course material prepared you for this question </string>
     <string name="question_label">Question:</string>
     <string name="initial_answer_label">Initial Answer:</string>
     <string name="initial_answer_rationales_label">Rationales for Selected Answer</string>
@@ -57,4 +57,9 @@
     <string name="term_label">Term:</string>
     <string name="tags_label">Tags:</string>
     <string name="logout">Logout</string>
+    <string name="tag_label">Tag:</string>
+    <string name="search">Search</string>
+    <string name="average_ratings">Average Ratings</string>
+    <string name="done">Done</string>
+    <string name="other_statistics">Other Statistics</string>
 </resources>

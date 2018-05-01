@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".student.courses.SelectCourseFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".instructor.search.SelectQuestionFragment">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/coursesRecyclerView"
+        android:id="@+id/questionsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
     </android.support.v7.widget.RecyclerView>
 
 </FrameLayout>

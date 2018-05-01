@@ -5,11 +5,9 @@ import android.os.Bundle
 import com.valentino.questionbank.R
 import com.valentino.questionbank.api.ApiService
 import com.valentino.questionbank.model.Course
-import com.valentino.questionbank.utilities.defaultPrefs
+import com.valentino.questionbank.utilities.prefs
 import com.valentino.questionbank.utilities.session
 import kotlinx.android.synthetic.main.activity_add_class.*
-
-private const val SUCCESS_CODE = 1
 
 class AddClassActivity : AppCompatActivity() {
 
@@ -21,7 +19,8 @@ class AddClassActivity : AppCompatActivity() {
                 val newCourse = Course(nameTextView.text.toString(),
                         codeTextView.text.toString(),
                         termTextView.text.toString())
-                ApiService.postCourse(defaultPrefs(this).session, newCourse) {
+                ApiService.postCourse(prefs(this).session, newCourse) {
+                    setResult(RESULT_OK)
                     finish()
                 }
             }

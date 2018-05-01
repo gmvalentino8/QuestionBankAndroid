@@ -7,21 +7,19 @@ import com.valentino.questionbank.api.ApiService
 import com.valentino.questionbank.model.Course
 import com.valentino.questionbank.model.Folder
 import com.valentino.questionbank.model.Question
-import com.valentino.questionbank.utilities.defaultPrefs
+import com.valentino.questionbank.utilities.prefs
 import com.valentino.questionbank.utilities.session
-
-private const val MODE_PARAM = "mode"
-private const val COURSE_PARAM = "course"
-private const val FOLDER_PARAM = "folder"
-private const val QUESTION_PARAM = "question"
-private const val SELECTED_ANSWER_PARAM = "selected_answer"
-private const val RATIONALE_PARAM = "rationale"
-private const val RATING_PARAM = "rating"
-private const val FINAL_ANSWER_PARAM = "final_answer"
+import com.valentino.questionbank.utilities.MODE_PARAM
+import com.valentino.questionbank.utilities.COURSE_PARAM
+import com.valentino.questionbank.utilities.FOLDER_PARAM
+import com.valentino.questionbank.utilities.QUESTION_PARAM
+import com.valentino.questionbank.utilities.SELECTED_ANSWER_PARAM
+import com.valentino.questionbank.utilities.RATIONALE_PARAM
+import com.valentino.questionbank.utilities.RATING_PARAM
+import com.valentino.questionbank.utilities.FINAL_ANSWER_PARAM
 
 class AnswerQuestionActivity : AppCompatActivity() {
 
-    private lateinit var mode : String
     private lateinit var course : Course
     private lateinit var folder: Folder
     private lateinit var question: Question
@@ -29,7 +27,6 @@ class AnswerQuestionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_answer_question)
-        mode = intent.getStringExtra(MODE_PARAM)!!
         course = intent.getParcelableExtra(COURSE_PARAM)!!
         folder = intent.getParcelableExtra(FOLDER_PARAM)!!
         question = intent.getParcelableExtra(QUESTION_PARAM)!!
@@ -43,10 +40,10 @@ class AnswerQuestionActivity : AppCompatActivity() {
 
     private fun loadAnswerSummaryFragment() {
         question.qid?.let {
-            ApiService.getAnswer(defaultPrefs(this).session, it) {
+            ApiService.getAnswer(prefs(this).session, it) {
                 val summaryFragment = SummaryFragment()
                 val args = Bundle()
-                args.putString(MODE_PARAM, mode)
+                args.putString(MODE_PARAM, "summary")
                 args.putParcelable(COURSE_PARAM, course)
                 args.putParcelable(FOLDER_PARAM, folder)
                 args.putParcelable(QUESTION_PARAM, question)
@@ -65,7 +62,6 @@ class AnswerQuestionActivity : AppCompatActivity() {
     private fun loadInitialAnswerFragment() {
         val initialAnswerFragment = InitialAnswerFragment()
         val args = Bundle()
-        args.putString(MODE_PARAM, mode)
         args.putParcelable(COURSE_PARAM, course)
         args.putParcelable(FOLDER_PARAM, folder)
         args.putParcelable(QUESTION_PARAM, question)

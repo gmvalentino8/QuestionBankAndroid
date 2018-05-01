@@ -38,7 +38,7 @@ class QuestionsAdapter(private val questions: List<Question>) : RecyclerView.Ada
         fun bindData(question: Question, position: Int) {
             view.titleTextView.text = String.format("Question %d:", position + 1)
             view.contentTextView.text = question.content
-            //view.tagsTextView.text = String.format("Tags: %s", question.tags.joinToString(", "))
+            view.tagsTextView.text = String.format("Tags: %s", question.tags.joinToString(", "))
         }
     }
 }

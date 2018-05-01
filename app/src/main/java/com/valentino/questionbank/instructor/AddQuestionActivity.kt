@@ -9,12 +9,10 @@ import com.valentino.questionbank.api.ApiService
 import com.valentino.questionbank.model.Answer
 import com.valentino.questionbank.model.Folder
 import com.valentino.questionbank.model.Question
-import com.valentino.questionbank.utilities.defaultPrefs
+import com.valentino.questionbank.utilities.FOLDER_PARAM
+import com.valentino.questionbank.utilities.prefs
 import com.valentino.questionbank.utilities.session
 import kotlinx.android.synthetic.main.activity_add_question.*
-
-private const val SUCCESS_CODE = 1
-private const val QUESTION_PARAM = "question"
 
 class AddQuestionActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var folder: Folder
@@ -23,7 +21,7 @@ class AddQuestionActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_question)
-        folder = intent.getParcelableExtra(QUESTION_PARAM)
+        folder = intent.getParcelableExtra(FOLDER_PARAM)
         answerACardView.setOnClickListener(this)
         answerBCardView.setOnClickListener(this)
         answerCCardView.setOnClickListener(this)
@@ -61,7 +59,8 @@ class AddQuestionActivity : AppCompatActivity(), View.OnClickListener {
                     val newQuestion = Question(folder.fid!!,
                             questionTextView.text.toString(),
                             answerArray, selectedAnswer, false, tags)
-                    ApiService.postQuestion(defaultPrefs(this).session, newQuestion) {
+                    ApiService.postQuestion(prefs(this).session, newQuestion) {
+                        setResult(RESULT_OK)
                         finish()
                     }
                 }

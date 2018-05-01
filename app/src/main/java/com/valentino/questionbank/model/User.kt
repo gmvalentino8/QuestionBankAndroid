@@ -7,5 +7,6 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class User(@Json(name = "name") var name: String,
                 @Json(name = "email") var email: String,
-                @Json(name = "school_id") var school: Int,
-                @Json(name = "body") var type: String): Parcelable
+                @Json(name = "school_id") var schoolId: Int,
+                @Json(name = "school_name") var school: String,
+                @Json(name = "type") var type: String): Parcelable

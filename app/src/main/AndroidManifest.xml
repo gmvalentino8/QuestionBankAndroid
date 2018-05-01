@@ -24,7 +24,8 @@
         <activity
             android:name=".shared.RegisterActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".instructor.AddClassActivity" />
+        <activity android:name=".instructor.AddClassActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".shared.MainActivity"
             android:label="@string/title_activity_main"
@@ -33,10 +34,20 @@
         <activity
             android:name=".student.answer.AnswerQuestionActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".instructor.AddQuestionActivity" />
-        <activity android:name=".instructor.AddFolderActivity" />
-        <activity android:name=".instructor.QuestionOverviewActivity" />
-        <activity android:name=".student.courses.JoinCourseActivity"></activity>
+        <activity
+            android:name=".instructor.AddQuestionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".instructor.AddFolderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".instructor.QuestionOverviewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".student.courses.JoinCourseActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".instructor.search.BrowseQuestionsActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

@@ -6,19 +6,15 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import com.valentino.questionbank.R
 import com.valentino.questionbank.api.ApiService
+import com.valentino.questionbank.instructor.search.BrowseQuestionsActivity
 import com.valentino.questionbank.shared.courses.CoursesFragment
-import com.valentino.questionbank.utilities.defaultPrefs
-import com.valentino.questionbank.utilities.session
+import com.valentino.questionbank.utilities.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-
-private const val MODE_PARAM = "mode"
+import kotlinx.android.synthetic.main.nav_header_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -28,10 +24,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        defaultPrefs(this).session
+        prefs(this).session
         mode = intent.getStringExtra(MODE_PARAM)
 
         loadClassesFragment()
+
+        ApiService.getUser(prefs(this).session, prefs(this).user) {
+            navName.text = it.name
+            navEmail.text = it.email
+        }
 
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -56,11 +57,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 loadClassesFragment()
             }
             R.id.nav_profile -> {
-
+                // TODO: Make profile page
+            }
+            R.id.nav_search -> {
+                if (mode == MODE_INSTRUCTOR) {
+                    val intent = Intent(this, BrowseQuestionsActivity::class.java)
+                    startActivity(intent)
+                }
             }
             R.id.nav_logout -> {
                 ApiService.logoutUser {
-                    defaultPrefs(this).session = ""
+                    prefs(this).session = ""
                     val intent = Intent(this, LoginActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
@@ -77,7 +84,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         args.putString(MODE_PARAM, mode)
         classesFragment.arguments = args
         supportFragmentManager.beginTransaction()
-                .add(R.id.content, classesFragment)
+                .replace(R.id.content, classesFragment)
                 .commit()
     }
 }

@@ -12,21 +12,16 @@ import com.valentino.questionbank.model.Answer
 import com.valentino.questionbank.model.Course
 import com.valentino.questionbank.model.Folder
 import com.valentino.questionbank.model.Question
+import com.valentino.questionbank.utilities.MODE_PARAM
+import com.valentino.questionbank.utilities.COURSE_PARAM
+import com.valentino.questionbank.utilities.FOLDER_PARAM
+import com.valentino.questionbank.utilities.QUESTION_PARAM
+import com.valentino.questionbank.utilities.SELECTED_ANSWER_PARAM
+import com.valentino.questionbank.utilities.RATIONALE_PARAM
+
 import kotlinx.android.synthetic.main.fragment_initial_answer.view.*
 
-private const val MODE_PARAM = "mode"
-private const val COURSE_PARAM = "course"
-private const val FOLDER_PARAM = "folder"
-private const val QUESTION_PARAM = "question"
-private const val SELECTED_ANSWER_PARAM = "selected_answer"
-private const val RATIONALE_PARAM = "rationale"
-
-/**
- * A simple [Fragment] subclass.
- *
- */
 class InitialAnswerFragment : Fragment(), View.OnClickListener {
-    private lateinit var mode : String
     private lateinit var course : Course
     private lateinit var folder: Folder
     private lateinit var question: Question
@@ -37,7 +32,6 @@ class InitialAnswerFragment : Fragment(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mode = arguments?.getString(MODE_PARAM)!!
         course = arguments?.getParcelable(COURSE_PARAM)!!
         folder = arguments?.getParcelable(FOLDER_PARAM)!!
         question = arguments?.getParcelable(QUESTION_PARAM)!!
@@ -85,7 +79,6 @@ class InitialAnswerFragment : Fragment(), View.OnClickListener {
                 if (validate()) {
                     val feedbackFragment = FeedbackFragment()
                     val args = Bundle()
-                    args.putString(MODE_PARAM, mode)
                     args.putParcelable(COURSE_PARAM, course)
                     args.putParcelable(FOLDER_PARAM, folder)
                     args.putParcelable(QUESTION_PARAM, question)
@@ -103,7 +96,7 @@ class InitialAnswerFragment : Fragment(), View.OnClickListener {
     private fun deselectPreviousAnswer() {
         val cardBackground = context?.getColor(R.color.white)!!
         val textColor = context?.getColor(R.color.black)!!
-        val labelTextColor = context?.getColor(R.color.colorPrimary)!!
+        val labelTextColor = context?.getColor(R.color.colorPrimaryDark)!!
 
         when (selectedAnswer) {
             0 -> {

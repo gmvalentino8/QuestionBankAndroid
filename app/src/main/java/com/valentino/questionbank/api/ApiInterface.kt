@@ -7,8 +7,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
 
-private const val BASE_URL = "https://d4def662.ngrok.io/"
-
 interface ApiInterface {
 
     @GET("/schools")
@@ -19,6 +17,9 @@ interface ApiInterface {
 
     @POST("/users/register")
     fun registerUser(@Body user: User) : Call<Void>
+
+    @GET("/users")
+    fun getUser(@Header("AuthToken") token: String, @Query("user_id") uid: String) : Call<User>
 
     @GET("/sessions/isvalid")
     fun tokenIsValid(@Header("AuthToken") token: String) : Call<ValidResponse>
@@ -38,6 +39,11 @@ interface ApiInterface {
     @GET("/classes")
     fun getClasses(@Header("AuthToken") token: String) : Call<List<Course>>
 
+    @GET("/schools/{id}/classes")
+    fun filterClasses(@Header("AuthToken") token: String, @Path("id") sid: Int,
+                      @Query("name") name: String, @Query("class_code") code: String,
+                      @Query("term") term: String) : Call<List<Course>>
+
     @GET("/classes/folders")
     fun getFolders(@Header("AuthToken") token: String, @Query("class_id") classId: Int) : Call<List<Folder>>
 
@@ -46,6 +52,9 @@ interface ApiInterface {
 
     @GET("/folders/questions")
     fun getQuestions(@Header("AuthToken") token: String, @Query("folder_id") folderId: Int) : Call<List<Question>>
+
+    @GET("/questions/search")
+    fun filterQuestions(@Header("AuthToken") token: String, @Query("name") name: String, @Query("tag") tag: String) : Call<List<Question>>
 
     @POST("/folders/questions")
     fun postQuestion(@Header("AuthToken") token: String, @Body question: Question) : Call<Void>
@@ -56,11 +65,15 @@ interface ApiInterface {
     @GET("/questions/answer")
     fun getAnswer(@Header("AuthToken") token: String, @Query("question_id") questionId: Int) : Call<StudentAnswer>
 
-    @GET("/questions/rationale")
-    fun getRationales(@Header("AuthToked") token: String, @Query("question_id") questionId: Int, @Query("class_id") classId: Int)
+    @GET("/questions/rationales")
+    fun getRationales(@Header("AuthToken") token: String, @Query("question_id") questionId: Int,
+                      @Query("class_id") classId: Int) : Call<List<Rationale>>
+
+    @GET("/questions/analyze")
+    fun getAnalysis(@Header("AuthToken") token: String, @Query("question_id") questionId: Int) : Call<Analysis>
 
     companion object Factory {
-        val ngrok = "be8a82db"
+        val ngrok = "b57289aa"
         val BASE_URL = "https://" + ngrok + ".ngrok.io"
         fun create(): ApiInterface {
             val retrofit = Retrofit.Builder()

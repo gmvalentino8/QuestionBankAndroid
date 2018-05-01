@@ -7,12 +7,11 @@ import com.valentino.questionbank.R
 import com.valentino.questionbank.api.ApiService
 import com.valentino.questionbank.model.Course
 import com.valentino.questionbank.model.Folder
-import com.valentino.questionbank.utilities.defaultPrefs
+import com.valentino.questionbank.utilities.COURSE_PARAM
+import com.valentino.questionbank.utilities.prefs
 import com.valentino.questionbank.utilities.session
 import kotlinx.android.synthetic.main.activity_add_folder.*
 
-private const val SUCCESS_CODE = 1
-private const val COURSE_PARAM = "course"
 
 class AddFolderActivity : AppCompatActivity() {
 
@@ -25,7 +24,8 @@ class AddFolderActivity : AppCompatActivity() {
                 Log.d("AddFolderActivity", "Validated")
                 val newFolder = Folder(course.cid!!, nameTextView.text.toString(), descriptionTextView.text.toString())
                 Log.d("AddFolderActivity", newFolder.toString())
-                ApiService.postFolder(defaultPrefs(this).session, newFolder) {
+                ApiService.postFolder(prefs(this).session, newFolder) {
+                    setResult(RESULT_OK)
                     finish()
                 }
             }
